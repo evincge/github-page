@@ -4,7 +4,6 @@ import backtype.storm.Config;
 import backtype.storm.StormSubmitter;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
-import com.alibaba.middleware.race.RaceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,7 @@ public class RaceTopology {
         builder.setSpout("spout", new RaceSentenceSpout(), spout_Parallelism_hint);
         builder.setBolt("split", new SplitSentence(), split_Parallelism_hint).shuffleGrouping("spout");
         builder.setBolt("count", new WordCount(), count_Parallelism_hint).fieldsGrouping("split", new Fields("word"));
-        String topologyName = RaceConfig.JstormTopologyName;
+        String topologyName = "testtopo";
 
         try {
             StormSubmitter.submitTopology(topologyName, conf, builder.createTopology());
